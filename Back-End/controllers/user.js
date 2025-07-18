@@ -1,5 +1,5 @@
 import generateToken from "../middlewre/GenerateToke.js";
-import User from "../models/user.js";
+import {User} from "./../models/user.js";
 import bcrypt from "bcryptjs";
 
 
@@ -94,3 +94,21 @@ export const login = async (req, res) => {
       .json({ message: error.message || "Internal Server Error" });
   }
 };
+
+
+// getting the users
+
+
+
+export const gettingUsers=async(req,res)=>{
+  try {
+   const users=await User.find();
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+   res.status(200).json(users);
+  } catch (error) {
+    console.log("Error in getting users:", error);
+     
+  }
+}
