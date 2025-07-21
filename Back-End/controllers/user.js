@@ -52,11 +52,11 @@ export const register = async (req, res) => {
  
 export const login = async (req, res) => {
   // getting the data from the request
-  const { userName, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     // checking if the user exists
-    const findUser = await User.findOne({ userName });
+    const findUser = await User.findOne({ email: email });
 
     if (!findUser) {
       return res
@@ -76,7 +76,7 @@ export const login = async (req, res) => {
 
       // Generate token
       const token = generateToken(findUser._id);
-      console.log("Token generated:", token);
+
 
       res.cookie("token", token, {
         httpOnly: true,
@@ -96,19 +96,27 @@ export const login = async (req, res) => {
 };
 
 
-// getting the users
+// getting the user by id
 
 
 
-export const gettingUsers=async(req,res)=>{
+// controllers/userController.js
+export const getProfile = async (req, res) => {
   try {
-   const users=await User.find();
-    if (!users || users.length === 0) {
-      return res.status(404).json({ message: "No users found" });
-    }
-   res.status(200).json(users);
-  } catch (error) {
-    console.log("Error in getting users:", error);
-     
+    // 1. Grab the ID placed on req by your auth middleware
+    const userId = req.user._id;   // adjust if your middleware uses req.userId
+  console.log("User ID from middleware:", userId);
+  
+    // 2. Query the DB, omitting password & __v
+    const user = await User.findById(userId).select('-password -__v');
+    console.log("User found:", user);
+    
+    // 3. Handle “not found”
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // 4. Success
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);      // let your global error handler format the response
   }
-}
+};
