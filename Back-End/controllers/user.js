@@ -96,8 +96,24 @@ export const login = async (req, res) => {
 };
 
 
-// getting the user by id
+//Getting all the users 
 
+export const getAllUsers=async (req, res) => {
+  try {
+    
+     const findUsers=await User.find()
+     console.log("Users found:", findUsers);
+     if(!findUsers || findUsers.length === 0) {
+       return res.status(404).json({ message: "No users found" });
+     }
+
+     res.status(200).json(findUsers);
+
+  } catch (error) {
+    console.log("Error fetching all users:", error);
+  }
+
+}
 
 
 // controllers/userController.js
@@ -105,7 +121,7 @@ export const getProfile = async (req, res) => {
   try {
     // 1. Grab the ID placed on req by your auth middleware
     const userId = req.user._id;   // adjust if your middleware uses req.userId
-  console.log("User ID from middleware:", userId);
+
   
     // 2. Query the DB, omitting password & __v
     const user = await User.findById(userId).select('-password -__v');
