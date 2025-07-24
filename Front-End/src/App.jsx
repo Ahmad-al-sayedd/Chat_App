@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/Navbar/NavBar.jsx";
 import LoginAndRegister from "./components/loginAndRegister/LoginAndRegister.jsx";
 import UserProfile from "./components/userProfile/UserProfile.jsx";
+import OneToOneChat from "./components/oneToOneChat/OneToOneChat.jsx";
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
 
           <Route element={<NavBar />}>
             <Route path="/profile/:token" element={<UserProfile />} />
+            <Route path="/userChat/:chatId" element={<OneToOneChat />} />
+
+
           </Route>
         </Routes>
       </main>

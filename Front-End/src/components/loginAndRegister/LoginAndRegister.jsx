@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+
+
+
+
+
 const LoginAndRegister = () => {
   const [switchPage, setSwitchPage] = useState(false); // false = login, true = register
   const [formData, setFormData] = useState({
@@ -7,6 +13,7 @@ const LoginAndRegister = () => {
     email: "",
     password: "",
   });
+  
   
   const navigate = useNavigate();
 
@@ -42,6 +49,7 @@ const LoginAndRegister = () => {
        if (fetchUrl.ok) {
         console.log("Form submitted successfully");
         // // Redirect or perform any other actions after successful submission
+        localStorage.setItem('userId',response.user._id)
         navigate(`/profile/${response.token}`);
         }
     } catch (error) {
