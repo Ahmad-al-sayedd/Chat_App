@@ -15,7 +15,7 @@ function App() {
           <Route index element={<LoginAndRegister />} />
 
           <Route element={<NavBar />}>
-            <Route path="/profile/:token" element={<UserProfile />} />
+            <Route  path="/profile/:token" element={<UserProfile />} />
             <Route path="/userChat/:chatId" element={<OneToOneChat />} />
 
 

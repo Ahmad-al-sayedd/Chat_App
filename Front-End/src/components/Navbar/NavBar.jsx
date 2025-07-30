@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 // import './navbar.scss'
-import { Outlet, Link,useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import userImg from "../../assets/images/user.avif";
 
 const NavBar = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  
+
   const local = localStorage.getItem("userId");
 
   const getAllUSER = async () => {
@@ -37,10 +37,8 @@ const NavBar = () => {
     const { userName } = user;
     return userName.toLowerCase().startsWith(inputValue.toLowerCase().trim());
   });
-  
 
   //Create Chat one 2 one
-  
 
   const createOneToOneChat = async (id) => {
     try {
@@ -52,21 +50,21 @@ const NavBar = () => {
         },
         body: JSON.stringify({ userId: id }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to create or retrieve chat");
       }
-  
+
       const chatData = await response.json();
-     
-      navigate(`/userChat/${chatData._id}`)
-      
+
+      navigate(`/userChat/${chatData._id}`);
+
       // Navigate or update state as needed
     } catch (error) {
       console.log("Chat creation error:", error);
     }
   };
-  
+
   return (
     <>
       <nav className="bg-blue-800 h-full w-[25%]">
@@ -93,7 +91,7 @@ const NavBar = () => {
             <p className="text-white text-center mt-4">No users found</p>
           ) : (
             (inputValue ? searchRes : users).map((user, index) => (
-              <Link onClick={()=>createOneToOneChat(user._id)} key={index}>
+              <Link onClick={() => createOneToOneChat(user._id)} key={index}>
                 <div className=" items-center text-white text-xl font-bold space-x-10 border-y py-8 flex gap-14 mb-2 px-4">
                   <img
                     src={userImg}
