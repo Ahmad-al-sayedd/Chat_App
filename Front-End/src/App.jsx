@@ -10,7 +10,7 @@ function App() {
     <>
       {/* <NavBar /> */}
 
-      <main className="h-screen flex ">
+      <main className="h-screen flex justify-center ">
         <Routes>
           <Route index element={<LoginAndRegister />} />
 

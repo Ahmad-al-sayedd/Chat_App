@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import { useNavigate } from "react-router-dom";
-
+import { UserContext } from "../../context";
 
 
 
 
 
 const LoginAndRegister = () => {
+
+
+  const {setUserId}=useContext(UserContext)
+  
   const [switchPage, setSwitchPage] = useState(false); // false = login, true = register
   const [formData, setFormData] = useState({
     username: "",
@@ -51,6 +55,7 @@ const LoginAndRegister = () => {
         // // Redirect or perform any other actions after successful submission
         localStorage.setItem('userId',response.user._id)
         navigate(`/profile/${response.token}`);
+        setUserId(response.user._id)
         }
     } catch (error) {
       console.log("Error submitting form:", error);
