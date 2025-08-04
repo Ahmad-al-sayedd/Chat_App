@@ -1,4 +1,4 @@
-import { Message, Chat } from "../models/user.js";
+import { Message, Chat, User } from "../models/user.js";
 
 export const CreateMessage = async (req, res) => {
   const currentUserId = req.user._id;
@@ -53,5 +53,44 @@ export const getMessage = async (req, res) => {
   } catch (error) {
     console.error("Error fetching messages:", error);
     res.status(500).json({ message: "Failed to fetch messages" });
+  }
+};
+
+
+export const EditMessage = async (req, res) => {
+  const userId = req.user._id;
+  const { content } = req.body;
+  const { messageId } = req.params;
+  console.log('userId',userId)
+ console.log('content',content);
+ 
+ console.log(messageId);
+ 
+  try {
+    // Check for authentication
+    if (!userId) {
+      return res.status(401).json({ message: "User is not authenticated" });
+    }
+
+    // Validate input
+    if (!content || !messageId) {
+      return res.status(400).json({ message: "Missing content or message ID" });
+    }
+
+    // Find and update the message
+    const updatedMessage = await Message.findByIdAndUpdate(
+      messageId,
+      { content },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({ message: "Message not found" });
+    }
+
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error("Edit error:", error);
+    res.status(500).json({ message: "Failed to edit message" });
   }
 };
